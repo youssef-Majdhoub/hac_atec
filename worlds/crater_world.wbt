@@ -86,7 +86,8 @@ Pioneer3at {
     }
   ]
 }
-Supervisor {
+Robot {
+  supervisor TRUE
   controller "dashboard"
   children [
     Receiver {

@@ -224,11 +224,24 @@ The overlay displays:
 - GPS correction weight;
 - pitch-slip and stuck flags.
 
-To view it, open the project folder in Webots, open `crater_world.wbt`, and
-start the simulation. The console should show both `my_controller` and
-`dashboard` starting successfully. If Webots reports that either controller
-directory cannot be found, open the repository as a Webots project rather than
-opening only the `.wbt` file.
+To view it, first close the running world completely, regenerate the world if
+needed, and reopen `crater_world.wbt` from the project folder in Webots. The
+dashboard is an overlay inside the Webots 3D view, not a separate window. The
+console should show both `my_controller` and `dashboard` starting successfully.
+The dashboard initially displays `WAITING FOR TELEMETRY`, then replaces it
+with live values. If Webots reports that either controller directory cannot be
+found, open the repository as a Webots project rather than opening only the
+`.wbt` file.
+
+Use this exact restart sequence after changing `create_creator.py`:
+
+```text
+1. Stop the simulation.
+2. Close the Webots world or Webots completely.
+3. From the repository root run: .\venv\Scripts\python.exe create_creator.py
+4. Reopen crater_world.wbt in Webots.
+5. Start the simulation.
+```
 
 The dashboard currently shows live telemetry. Automatic fault-scenario
 execution and pass/fail counters are the next layer; the existing detailed

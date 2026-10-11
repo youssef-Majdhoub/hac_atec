@@ -1,5 +1,5 @@
 # create_creator.py
-import math, random
+import math, random, os
 
 random.seed(42)
 
@@ -105,7 +105,10 @@ SPAWN_X = 0.0
 SPAWN_Y = -45.0
 spawn_z = height(SPAWN_X + SIZE / 2, SPAWN_Y + SIZE / 2) + 1.4
 
-with open("crater_world.wbt", "w") as f:
+HERE = os.path.dirname(os.path.abspath(__file__))
+os.makedirs(os.path.join(HERE, "worlds"), exist_ok=True)
+OUT = os.path.join(HERE, "worlds", "crater_world.wbt")
+with open(OUT, "w") as f:
     f.write(f"""#VRML_SIM R2025a utf8
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
@@ -194,7 +197,8 @@ Pioneer3at {{
     }}
   ]
 }}
-Supervisor {{
+Robot {{
+  supervisor TRUE
   controller "dashboard"
   children [
     Receiver {{
@@ -205,4 +209,4 @@ Supervisor {{
   ]
 }}
 """)
-print("Wrote crater_world.wbt")
+print("Wrote", OUT)
