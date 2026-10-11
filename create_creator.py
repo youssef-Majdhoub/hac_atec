@@ -101,7 +101,9 @@ def height(x, y):
 
 
 heights = [height(i * SP, j * SP) for j in range(N) for i in range(N)]
-spawn_z = height(CX, CY) + 0.5  # robot starts on the crater floor
+SPAWN_X = 0.0
+SPAWN_Y = -45.0
+spawn_z = height(SPAWN_X + SIZE / 2, SPAWN_Y + SIZE / 2) + 1.4
 
 with open("crater_world.wbt", "w") as f:
     f.write(f"""#VRML_SIM R2025a utf8
@@ -143,7 +145,10 @@ Solid {{
   boundingObject USE CRATERS
 }}
 Pioneer3at {{
-  translation 0 0 {spawn_z:.2f}
+  # South-edge spawn: yaw only, with zero roll and pitch so the wheels face down.
+  translation {SPAWN_X:.1f} {SPAWN_Y:.1f} {spawn_z:.2f}
+  # Turn 180 degrees from the original south-facing heading.
+  rotation 0 0 1 1.5708
   controller "my_controller"
   extensionSlot [
     Camera {{
@@ -182,6 +187,20 @@ Pioneer3at {{
     }}
     GPS {{
       name "gps"
+    }}
+    Emitter {{
+      name "telemetry"
+      channel 1
+    }}
+  ]
+}}
+Supervisor {{
+  controller "dashboard"
+  children [
+    Receiver {{
+      name "telemetry"
+      channel 1
+      samplingPeriod 100
     }}
   ]
 }}

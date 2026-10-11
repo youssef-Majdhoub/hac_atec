@@ -37,7 +37,10 @@ Solid {
   boundingObject USE CRATERS
 }
 Pioneer3at {
-  translation 0 0 -6.51
+  # South-edge spawn: yaw only, with zero roll and pitch so the wheels face down.
+  translation 0.0 -45.0 3.02
+  # Turn 180 degrees from the original south-facing heading.
+  rotation 0 0 1 1.5708
   controller "my_controller"
   extensionSlot [
     Camera {
@@ -76,6 +79,20 @@ Pioneer3at {
     }
     GPS {
       name "gps"
+    }
+    Emitter {
+      name "telemetry"
+      channel 1
+    }
+  ]
+}
+Supervisor {
+  controller "dashboard"
+  children [
+    Receiver {
+      name "telemetry"
+      channel 1
+      samplingPeriod 100
     }
   ]
 }
